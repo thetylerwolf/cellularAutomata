@@ -6,8 +6,30 @@ export default class Cell {
     this.dead = false;
   }
 
+  newFromCurrent() {
+    const newCell = new Cell(this.row, this.col, this.alive);
+    newCell.dead = this.dead;
+
+    return newCell;
+  }
+
+  checkState(grid) {
+    const neighbors = this.countNeighbors(grid),
+      cell = this.newFromCurrent();
+
+    if (this.dead) return cell;
+
+    if (cell.alive && (neighbors < 2 || neighbors > 3)) {
+      cell.kill();
+    } else if (!cell.alive && !cell.dead && neighbors === 2) {
+      cell.birth();
+    }
+
+    return cell;
+  }
+
   kill() {
-    this.alive = false;
+    if (this.alive) this.alive = false;
     this.dead = true;
   }
 

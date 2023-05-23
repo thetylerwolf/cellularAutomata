@@ -47,19 +47,17 @@ function drawGrid() {
 
 // Update the grid based on the Game of Life rules
 function updateGrid() {
+  let newGrid = new Array(rows);
   for (let row = 0; row < rows; row++) {
+    newGrid[row] = new Array(cols);
     for (let col = 0; col < cols; col++) {
       const cell = grid[row][col];
-      const neighbors = cell.countNeighbors(grid);
 
-      if (cell.alive && (neighbors < 2 || neighbors > 3)) {
-        cell.kill();
-      } else if (!cell.alive && !cell.dead && neighbors === 2) {
-        cell.birth();
-      } else {
-      }
+      newGrid[row][col] = cell.checkState(grid);
     }
   }
+
+  grid = newGrid;
 }
 
 // Main game loop
